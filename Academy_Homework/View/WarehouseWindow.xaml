@@ -131,6 +131,17 @@
 
                 </StackPanel>
             </TabItem>
+            
+            <TabItem Header="Выборка данных">
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <Button Content="Поставщик, макс. товары" Width="200" HorizontalAlignment="Left" Margin="10,10,0,10" Command="{Binding ShowSupplierWithMaxItemsCommand}"/>
+                    <Button Content="Поставщик, мин. товары" Width="200" HorizontalAlignment="Left" Margin="10,10,0,10" Command="{Binding ShowSupplierWithMinItemsCommand}"/>
+                    <Button Content="Тип, макс. товары" Width="200" HorizontalAlignment="Left" Margin="10,10,0,10" Command="{Binding ShowTypeWithMaxItemsCommand}"/>
+                    <Button Content="Тип, мин. товары" Width="200" HorizontalAlignment="Left" Margin="10,10,0,10" Command="{Binding ShowTypeWithMinItemsCommand}"/>
+                    <Button Content="Поставка, старше N дней" Width="200" HorizontalAlignment="Left" Margin="10,10,0,10" Command="{Binding ShowOlderThanNDaysCommand}"/>
+                </StackPanel>
+
+            </TabItem>
 
         </TabControl>
     </Grid>

@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Academy_Homework.ViewModel
@@ -16,15 +17,24 @@ namespace Academy_Homework.ViewModel
         private NpgsqlConnection connection;
 
         public ICommand ConnectCommandButton { get; } // Подключение к базе данных
+
         public ICommand AddProductCommand { get; } // Добавление товара
         public ICommand AddProductTypesCommand { get; } // Добавление типа продукта
         public ICommand AddSuppliersCommand { get; } // Добавление типа продукта
+
         public ICommand UpdateProductInformationCommand { get; } // Обновление списка продуктов из базы данных
         public ICommand UpdateProductTypesInformationCommand { get; } // Обновление списка типов из базы данных
         public ICommand UpdateSuppliersInformationCommand { get; } // Обновление списка поставщиков из базы данных
+
         public ICommand DeleteProductCommand { get; } // Удаление продукта из базы данных
-        public ICommand DeleteProductTypeCommand { get; } // Удаление продукта из базы данных
-        public ICommand DeleteSupplierCommand { get; } // Удаление продукта из базы данных
+        public ICommand DeleteProductTypeCommand { get; } // Удаление типа продукта из базы данных
+        public ICommand DeleteSupplierCommand { get; } // Удаление поставщика из базы данных
+
+        public ICommand ShowSupplierWithMaxItemsCommand { get; } // Поставщик, макс. товары
+        public ICommand ShowSupplierWithMinItemsCommand { get; } // Поставщик, мин. товары"
+        public ICommand ShowTypeWithMaxItemsCommand { get; } // Тип, макс. товары
+        public ICommand ShowTypeWithMinItemsCommand { get; } // Тип, мин. товары
+        public ICommand ShowOlderThanNDaysCommand { get; } // Поставка, старше N дней
 
         public WarehouseViewModel(MainViewModel mainViewModel)
         {
@@ -43,6 +53,12 @@ namespace Academy_Homework.ViewModel
             DeleteProductCommand = new DelegateCommand(DeleteProduct, (_) => true);
             DeleteProductTypeCommand = new DelegateCommand(DeleteProductType, (_) => true);
             DeleteSupplierCommand = new DelegateCommand(DeleteSupplier, (_) => true);
+
+            ShowSupplierWithMaxItemsCommand = new DelegateCommand(ShowSupplierWithMaxItems, (_) => true);
+            ShowSupplierWithMinItemsCommand = new DelegateCommand(ShowSupplierWithMinItems, (_) => true);
+            ShowTypeWithMaxItemsCommand = new DelegateCommand(ShowTypeWithMaxItems, (_) => true);
+            ShowTypeWithMinItemsCommand = new DelegateCommand(ShowTypeWithMinItems, (_) => true);
+            ShowOlderThanNDaysCommand = new DelegateCommand(ShowOlderThanNDays, (_) => true);
         }
 
 
@@ -201,6 +217,7 @@ namespace Academy_Homework.ViewModel
             }
         }
 
+
         private void ExecuteIfConnectionOpen(Action action)
         {
             if (connection != null && connection.State == ConnectionState.Open)
@@ -212,7 +229,6 @@ namespace Academy_Homework.ViewModel
                 MessageBox.Show("Нет подключения к базе данных");
             }
         }
-
         int getLastIndex(string sqlQuery)
         {
             using var command = new NpgsqlCommand(sqlQuery, connection);
@@ -229,11 +245,14 @@ namespace Academy_Homework.ViewModel
             return lastIndex;
         }
 
-        private bool IsProductTypeValid(int productTypeId)
+        private bool IsProductTypeValid(int productTypeId, string sqlQuery)
         {
-            int maxProductTypeId = getLastIndex("SELECT id FROM ProductTypes ORDER BY id DESC");
-            return productTypeId >= 1 && productTypeId <= maxProductTypeId;
+            int maxProductTypeId = getLastIndex(sqlQuery);
+            if (productTypeId <= maxProductTypeId || productTypeId > maxProductTypeId) return true;
+
+            return false;
         }
+
 
         // Вставка новых товаров/типов товаров/поставщиков
         private void AddProduct(object obj)
@@ -243,15 +262,12 @@ namespace Academy_Homework.ViewModel
                 NpgsqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    int lastIndex = getLastIndex("SELECT id FROM Products ORDER BY id DESC");
-
-                    if (IsProductTypeValid(ProductTypeID))
+                    if (IsProductTypeValid(ProductTypeID, "SELECT id FROM ProductTypes ORDER BY id DESC"))
                     {
-                        var commandText = "INSERT INTO Products((name, type_id, quantity, cost_price) VALUES(@id, @name, @type_id, @quantity, @cost_price)";
+                        var commandText = "INSERT INTO Products(name, type_id, quantity, cost_price) VALUES(@name, @type_id, @quantity, @cost_price)";
 
                         using NpgsqlCommand command = new NpgsqlCommand(commandText, connection);
 
-                        command.Parameters.AddWithValue("@id", lastIndex);
                         command.Parameters.AddWithValue("@name", ProductName);
                         command.Parameters.AddWithValue("@type_id", ProductTypeID);
                         command.Parameters.AddWithValue("@quantity", ProductQuantity);
@@ -278,7 +294,6 @@ namespace Academy_Homework.ViewModel
                 }
             });
         }
-
         private void AddProductType(object obj)
         {
             ExecuteIfConnectionOpen(() =>
@@ -286,12 +301,10 @@ namespace Academy_Homework.ViewModel
                 NpgsqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    var commandText = "INSERT INTO ProductTypes VALUES(@id, @type_name)";
-                    int lastIndex = getLastIndex("SELECT id FROM ProductTypes ORDER BY id DESC");
+                    var commandText = "INSERT INTO ProductTypes(type_name) VALUES(@type_name)";
 
                     using NpgsqlCommand command = new NpgsqlCommand(commandText, connection);
 
-                    command.Parameters.AddWithValue("@id", lastIndex);
                     command.Parameters.AddWithValue("@type_name", ProductType);
 
                     command.ExecuteNonQuery();
@@ -310,8 +323,6 @@ namespace Academy_Homework.ViewModel
                 }
             });
         }
-
-
         private void AddSuppliers(object obj)
         {
             ExecuteIfConnectionOpen(() =>
@@ -319,12 +330,10 @@ namespace Academy_Homework.ViewModel
                 NpgsqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    var commandText = "INSERT INTO Suppliers VALUES(@id, @supplier_name)";
-                    int lastIndex = getLastIndex("SELECT id FROM Suppliers ORDER BY id DESC");
+                    var commandText = "INSERT INTO Suppliers(supplier_name) VALUES(@supplier_name)";
 
                     using NpgsqlCommand command = new NpgsqlCommand(commandText, connection);
 
-                    command.Parameters.AddWithValue("@id", lastIndex);
                     command.Parameters.AddWithValue("@supplier_name", SuppliersName);
 
                     command.ExecuteNonQuery();
@@ -344,8 +353,8 @@ namespace Academy_Homework.ViewModel
             });
         }
 
+        
         // Обновление информации о товарах/типов товаров/поставщиках
-
         private void UpdateProductInformation(object obj)
         {
             string tableName = "Products";
@@ -356,22 +365,20 @@ namespace Academy_Homework.ViewModel
 
             ProductsDataView = dataSet.Tables[tableName]?.DefaultView;
         }
-
         private void UpdateProductTypesInformation(object obj)
         {
             string tableName = "ProductTypes";
-            string query = "SELECT * FROM ProductTypes";
+            string query = $"SELECT * FROM {tableName}";
             var adapter = new NpgsqlDataAdapter(query, connection);
             var dataSet = new DataSet();
             adapter.Fill(dataSet, tableName);
 
             ProductsTypeDataView = dataSet.Tables[tableName]?.DefaultView;
         }
-
         private void UpdateSuppliersInformation(object obj)
         {
             string tableName = "Suppliers";
-            string query = "SELECT * FROM Suppliers";
+            string query = $"SELECT * FROM {tableName}";
             var adapter = new NpgsqlDataAdapter(query, connection);
             var dataSet = new DataSet();
             adapter.Fill(dataSet, tableName);
@@ -381,18 +388,200 @@ namespace Academy_Homework.ViewModel
 
         private void DeleteProduct(object obj)
         {
-            //int id = obj.
+            var dataRow = (DataRowView)obj;
+            var rowID = dataRow.Row[0];
+
+            string tableName = "Products";
+            string query = $"DELETE FROM {tableName} WHERE id = {rowID}";
+
+            NpgsqlCommand command = new NpgsqlCommand(query, connection);
+
+            ExecuteIfConnectionOpen(() =>
+            {
+                command.ExecuteNonQuery();
+            });
+
+            ProductsDataView?.Table.Rows.Remove(dataRow.Row);
+
+            OnPropertyChanged(nameof(ProductsDataView));
         }
-
-
         private void DeleteProductType(object obj)
         {
-            //
-        }
+            var dataRow = (DataRowView)obj;
+            var rowID = dataRow.Row[0];
 
+            string tableName = "ProductTypes";
+            string query = $"DELETE FROM {tableName} WHERE id = {rowID}";
+
+            NpgsqlCommand command = new NpgsqlCommand(query, connection);
+
+            ExecuteIfConnectionOpen(() =>
+            {
+                command.ExecuteNonQuery();
+            });
+
+            ProductsTypeDataView?.Table.Rows.Remove(dataRow.Row);
+
+            OnPropertyChanged(nameof(ProductsTypeDataView));
+        }
         private void DeleteSupplier(object obj)
         {
-            //
+            var dataRow = (DataRowView)obj;
+            var rowID = dataRow.Row[0];
+
+            string tableName = "Suppliers";
+            string query = $"DELETE FROM {tableName} WHERE id = {rowID}";
+
+            NpgsqlCommand command = new NpgsqlCommand(query, connection);
+
+            ExecuteIfConnectionOpen(() =>
+            {
+                command.ExecuteNonQuery();
+            });
+
+            SuppliersDataView?.Table.Rows.Remove(dataRow.Row);
+
+            OnPropertyChanged(nameof(SuppliersDataView));
+        }
+
+
+        // Выборка данных
+        private void ShowSupplierWithMaxItems(object obj)
+        {
+            string query = "SELECT s.supplier_name AS supplier_name, SUM(p.quantity) AS total_quantity " +
+                           "FROM Suppliers s " +
+                           "JOIN Products_Suppliers ps ON s.id = ps.supplier_id " +
+                           "JOIN Products p ON ps.product_id = p.id " +
+                           "GROUP BY s.supplier_name " +
+                           "ORDER BY total_quantity DESC " +
+                           "LIMIT 1;";
+
+            using NpgsqlCommand command = new NpgsqlCommand(query, connection);
+
+            ExecuteIfConnectionOpen(() =>
+            {
+                using NpgsqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    string supplierName = reader["supplier_name"].ToString();
+                    int totalQuantity = Convert.ToInt32(reader["total_quantity"]);
+                    MessageBox.Show($"Поставщик с наибольшим количеством товаров: {supplierName}\nОбщее количество товаров: {totalQuantity}");
+                }
+                else
+                {
+                    MessageBox.Show("Нет данных о поставщиках.");
+                }
+            });
+        }
+
+        private void ShowSupplierWithMinItems(object obj)
+        {
+            string query = "SELECT s.supplier_name AS supplier_name, SUM(p.quantity) AS total_quantity " +
+                           "FROM Suppliers s " +
+                           "JOIN Products_Suppliers ps ON s.id = ps.supplier_id " +
+                           "JOIN Products p ON ps.product_id = p.id " +
+                           "GROUP BY s.supplier_name " +
+                           "ORDER BY total_quantity ASC " +
+                           "LIMIT 1;";
+
+            using NpgsqlCommand command = new NpgsqlCommand(query, connection);
+
+            ExecuteIfConnectionOpen(() =>
+            {
+                using NpgsqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    string supplierName = reader["supplier_name"].ToString();
+                    int totalQuantity = Convert.ToInt32(reader["total_quantity"]);
+                    MessageBox.Show($"Поставщик с минимальным количеством товаров: {supplierName}\nОбщее количество товаров: {totalQuantity}");
+                }
+                else
+                {
+                    MessageBox.Show("Нет данных о поставщиках.");
+                }
+            });
+        }
+
+        private void ShowTypeWithMaxItems(object obj)
+        {
+            string query = "SELECT pt.type_name AS type_name, SUM(p.quantity) AS total_quantity " +
+                            "FROM ProductTypes pt " +
+                            "JOIN Products p ON pt.id = p.type_id " +
+                            "GROUP BY pt.type_name " +
+                            "ORDER BY total_quantity DESC " +
+                            "LIMIT 1;";
+
+            using NpgsqlCommand command = new NpgsqlCommand(query, connection);
+
+            ExecuteIfConnectionOpen(() =>
+            {
+                using NpgsqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    string typeName = reader["type_name"].ToString();
+                    int totalQuantity = Convert.ToInt32(reader["total_quantity"]);
+                    MessageBox.Show($"Тип товаров с наибольшим количеством: {typeName}\nОбщее количество товаров: {totalQuantity}");
+                }
+                else
+                {
+                    MessageBox.Show("Нет данных о типах товаров.");
+                }
+            });
+        }
+
+        private void ShowTypeWithMinItems(object obj)
+        {
+            string query = "SELECT pt.type_name AS type_name, SUM(p.quantity) AS total_quantity " +
+                           "FROM ProductTypes pt " +
+                           "JOIN Products p ON pt.id = p.type_id " +
+                           "GROUP BY pt.type_name " +
+                           "ORDER BY total_quantity ASC " +
+                           "LIMIT 1;";
+
+            using NpgsqlCommand command = new NpgsqlCommand(query, connection);
+
+            ExecuteIfConnectionOpen(() =>
+            {
+                using NpgsqlDataReader reader = command.ExecuteReader();
+
+
+                if (reader.Read())
+                {
+                    string typeName = reader["type_name"].ToString();
+                    int totalQuantity = Convert.ToInt32(reader["total_quantity"]);
+                    MessageBox.Show($"Тип товаров с наименьшим количеством: {typeName}\nОбщее количество товаров: {totalQuantity}");
+                }
+                else
+                {
+                    MessageBox.Show("Нет данных о типах товаров.");
+                }
+            });
+        }
+
+        private void ShowOlderThanNDays(object obj)
+        {
+            string userInput = Microsoft.VisualBasic.Interaction.InputBox("Введите количество дней:", "Ввод количества дней", "");
+
+            if (int.TryParse(userInput, out int days))
+            {
+                string query = $"SELECT p.name AS product_name, s.supplier_name AS supplier_name, ps.price, s.amount, s.supply_date " +
+                   $"FROM Supplies s " +
+                   $"JOIN Products_Suppliers ps ON s.product_id = ps.product_id AND s.supplier_id = ps.supplier_id " +
+                   $"JOIN Products p ON s.product_id = p.id " +
+                   $"WHERE s.supply_date <= NOW() - INTERVAL '{days} days';";
+
+                using NpgsqlCommand command = new NpgsqlCommand(query, connection);
+
+                ExecuteIfConnectionOpen(() =>
+                {
+                    using NpgsqlDataReader reader = command.ExecuteReader();
+
+                    // допишу с утра
+                });
+            }
         }
 
 
