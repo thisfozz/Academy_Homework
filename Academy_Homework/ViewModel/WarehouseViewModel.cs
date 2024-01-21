@@ -30,6 +30,7 @@ namespace Academy_Homework.ViewModel
             AddProductCommand = new DelegateCommand(AddProduct, (_) => true);
         }
 
+        // Временное решение с передачей ID. (может получать через SELECT id FROM Product ORDER BY id DESC LIMIT 1; +1 сделав поле readonly)
         private int _productID;
         public int ProductID
         {
