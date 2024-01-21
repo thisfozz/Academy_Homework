@@ -15,10 +15,6 @@ namespace Academy_Homework.ViewModel
         private readonly string connectionString;
         private NpgsqlConnection connection;
 
-        private DataSet dataSet;
-        private SqlCommandBuilder command;
-        private DataTable dataTable;
-
         public ICommand ConnectCommandButton { get; } // Подключение к базе данных
         public ICommand AddProductCommand { get; } // Добавление товара
         public ICommand AddProductTypesCommand { get; } // Добавление типа продукта
