@@ -6,7 +6,47 @@
         xmlns:local="clr-namespace:Academy_Homework"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Window.Resources>
+        <Style x:Key="HomeworkButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF4CAF50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FF4CAF50"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF45A049"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid Cursor="">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="10">
+                <Button Content="Домашная работа 1" FontSize="16" 
+                    Command="{Binding WarehouseHmwOpenButton}" 
+                    Style="{StaticResource HomeworkButtonStyle}"/>
+                <Button 
+                Content="Домашная работа 2" FontSize="16" 
+                Command="{Binding Homework2OpenCommand}" 
+                Style="{StaticResource HomeworkButtonStyle}"/>
+                
+                <!-- другие кнопки-->
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
