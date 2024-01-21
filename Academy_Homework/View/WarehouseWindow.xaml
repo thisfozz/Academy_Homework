@@ -25,6 +25,7 @@
 
             <TabItem Header="Товары">
                 <StackPanel>
+                    
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBlock Text="Наименование:" Margin="0,0,10,0" FontWeight="Bold"/>
                         <TextBox Name="productNameTextBox" Width="150" Text="{Binding ProductName, Mode=TwoWay}"/>
@@ -36,14 +37,15 @@
                         <TextBox x:Name="productCostPriceTextBox" Width="80" Text="{Binding ProductCostPrice, Mode=TwoWay}"/>
                         <Button Content="Добавить товар" Command="{Binding AddProductCommand}" Margin="10,0,0,0" Width="150"/>
                     </StackPanel>
+                    <Button Content="Обновить" Command="{Binding UpdateProductInformationCommand}" Width="150" Margin="10"/>
 
-                    <DataGrid x:Name="productsDataGrid" CanUserAddRows="False" AutoGenerateColumns="False">
+                    <DataGrid x:Name="productsDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding ProductsDataView}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="id" IsReadOnly="True" Width="30"/>
-                            <DataGridTextColumn Header="Наименование товара" IsReadOnly="True" Width="200"/>
-                            <DataGridTextColumn Header="Тип товара" IsReadOnly="True" Width="200"/>
-                            <DataGridTextColumn Header="Количество товара" IsReadOnly="True" Width="150"/>
-                            <DataGridTextColumn Header="Цена товара" IsReadOnly="True" Width="150"/>
+                            <DataGridTextColumn Header="id" IsReadOnly="True" Width="30" Binding="{Binding id}"/>
+                            <DataGridTextColumn Header="Наименование товара" IsReadOnly="True" Width="200" Binding="{Binding name}"/>
+                            <DataGridTextColumn Header="Тип товара" IsReadOnly="True" Width="200" Binding="{Binding type_id}"/>
+                            <DataGridTextColumn Header="Количество товара" IsReadOnly="True" Width="150" Binding="{Binding quantity}"/>
+                            <DataGridTextColumn Header="Цена товара" IsReadOnly="True" Width="150" Binding="{Binding cost_price}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     
@@ -52,32 +54,41 @@
 
             <TabItem Header="Типы товаров">
                 <StackPanel>
+                    
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBlock Text="Наименование:" Margin="0,0,10,0" FontWeight="Bold"/>
                         <TextBox x:Name="productNameTypeTextBox" Width="150" Text="{Binding ProductType}"/>
                         <Button Content="Добавить тип продукта" Command="{Binding AddProductTypesCommand}" Margin="10,0,0,0" Width="150"/>
                     </StackPanel>
+                    <Button Content="Обновить" Command="{Binding UpdateProductTypesInformationCommand}" Width="150" Margin="10"/>
 
-                    <DataGrid x:Name="productsTypeDataGrid" CanUserAddRows="False" AutoGenerateColumns="False">
+                    <DataGrid x:Name="productsTypeDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding ProductsTypeDataView}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Тип товара" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="id" IsReadOnly="True" Width="30" Binding="{Binding id}"/>
+                            <DataGridTextColumn Header="Тип товара" IsReadOnly="True" Width="200" Binding="{Binding type_name}"/>
                         </DataGrid.Columns>
                     </DataGrid>
+                    
                 </StackPanel>
             </TabItem>
 
             <TabItem Header="Поставщики">
                 <StackPanel>
+                    
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBlock Text="Наименование:" Margin="0,0,10,0" FontWeight="Bold"/>
                         <TextBox x:Name="SuppliersNameTextBox" Width="150" Text="{Binding SuppliersName}"/>
                         <Button Content="Добавить поставщика" Command="{Binding AddSuppliersCommand}" Margin="10,0,0,0" Width="150"/>
                     </StackPanel>
-                    <DataGrid x:Name="productsSuppliersDataGrid" CanUserAddRows="False" AutoGenerateColumns="False">
+                    <Button Content="Обновить" Command="{Binding UpdateSuppliersInformationCommand}" Width="150" Margin="10"/>
+
+                    <DataGrid x:Name="productsSuppliersDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding SuppliersDataView}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Наименование поставщика" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="id" IsReadOnly="True" Width="30" Binding="{Binding id}"/>
+                            <DataGridTextColumn Header="Наименование поставщика" IsReadOnly="True" Width="200" Binding="{Binding supplier_name}"/>
                         </DataGrid.Columns>
                     </DataGrid>
+                    
                 </StackPanel>
             </TabItem>
 

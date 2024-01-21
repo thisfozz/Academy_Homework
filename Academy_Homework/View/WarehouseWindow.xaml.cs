@@ -1,15 +1,17 @@
-﻿using System.Windows;
+﻿using Academy_Homework.ViewModel;
+using System.Windows;
 
 namespace Academy_Homework.View
 {
     public partial class WarehouseWindow : Window
     {
-        public WarehouseWindow()
+        public WarehouseWindow(WarehouseViewModel warehouseViewModel)
         {
             InitializeComponent();
+            DataContext = warehouseViewModel;
 
-            Height = 450;
-            Width = 950;
+            Height = 900;
+            Width = 900;
         }
     }
 }

@@ -23,8 +23,11 @@ namespace Academy_Homework.ViewModel
         public ICommand AddProductCommand { get; } // Добавление товара
         public ICommand AddProductTypesCommand { get; } // Добавление типа продукта
         public ICommand AddSuppliersCommand { get; } // Добавление типа продукта
+        public ICommand UpdateProductInformationCommand { get; } // Обновление списка продуктов из базы данных
+        public ICommand UpdateProductTypesInformationCommand { get; } // Обновление списка типов из базы данных
+        public ICommand UpdateSuppliersInformationCommand { get; } // Обновление списка типов из базы данных
 
-        public WarehouseViewModel()
+        public WarehouseViewModel(MainViewModel mainViewModel)
         {
             connectionString = ConfigurationManager.ConnectionStrings["WarehouseConnectionString"].ConnectionString;
             connection = new NpgsqlConnection(connectionString);
@@ -33,7 +36,12 @@ namespace Academy_Homework.ViewModel
             AddProductCommand = new DelegateCommand(AddProduct, (_) => true);
             AddProductTypesCommand = new DelegateCommand(AddProductType, (_) => true);
             AddSuppliersCommand = new DelegateCommand(AddSuppliers, (_) => true);
+
+            UpdateProductInformationCommand = new DelegateCommand(UpdateProductInformation, (_) => true);
+            UpdateProductTypesInformationCommand = new DelegateCommand(UpdateProductTypesInformation, (_) => true);
+            UpdateSuppliersInformationCommand = new DelegateCommand(UpdateSuppliersInformation, (_) => true);
         }
+
 
         // Временное решение с передачей ID. (может получать через SELECT id FROM Product ORDER BY id DESC LIMIT 1; +1 сделав поле readonly)
         private int _productID;
@@ -134,6 +142,39 @@ namespace Academy_Homework.ViewModel
             }
         }
 
+        private DataView _productsDataView;
+        public DataView ProductsDataView
+        {
+            get { return _productsDataView; }
+            set
+            {
+                _productsDataView = value;
+                OnPropertyChanged(nameof(ProductsDataView));
+            }
+        }
+
+        private DataView _productsTypeDataView;
+        public DataView ProductsTypeDataView
+        {
+            get { return _productsTypeDataView; }
+            set
+            {
+                _productsTypeDataView = value;
+                OnPropertyChanged(nameof(ProductsTypeDataView));
+            }
+        }
+
+        private DataView _suppliersDataView;
+        public DataView SuppliersDataView
+        {
+            get { return _suppliersDataView; }
+            set
+            {
+                _suppliersDataView = value;
+                OnPropertyChanged(nameof(SuppliersDataView));
+            }
+        }
+
         private void ConnectToDatabase(object obj)
         {
 
@@ -191,6 +232,7 @@ namespace Academy_Homework.ViewModel
             return productTypeId >= 1 && productTypeId <= maxProductTypeId;
         }
 
+        // Вставка новых товаров/типов товаров/поставщиков
         private void AddProduct(object obj)
         {
             ExecuteIfConnectionOpen(() =>
@@ -297,6 +339,41 @@ namespace Academy_Homework.ViewModel
                     transaction.Dispose();
                 }
             });
+        }
+
+        // Обновление информации о товарах/типов товаров/поставщиках
+
+        private void UpdateProductInformation(object obj)
+        {
+            string tableName = "Products";
+            string query = "SELECT * FROM Products";
+            var adapter = new NpgsqlDataAdapter(query, connection);
+            var dataSet = new DataSet();
+            adapter.Fill(dataSet, tableName);
+
+            ProductsDataView = dataSet.Tables[tableName]?.DefaultView;
+        }
+
+        private void UpdateProductTypesInformation(object obj)
+        {
+            string tableName = "ProductTypes";
+            string query = "SELECT * FROM ProductTypes";
+            var adapter = new NpgsqlDataAdapter(query, connection);
+            var dataSet = new DataSet();
+            adapter.Fill(dataSet, tableName);
+
+            ProductsTypeDataView = dataSet.Tables[tableName]?.DefaultView;
+        }
+
+        private void UpdateSuppliersInformation(object obj)
+        {
+            string tableName = "Suppliers";
+            string query = "SELECT * FROM Suppliers";
+            var adapter = new NpgsqlDataAdapter(query, connection);
+            var dataSet = new DataSet();
+            adapter.Fill(dataSet, tableName);
+
+            SuppliersDataView = dataSet.Tables[tableName]?.DefaultView;
         }
 
 

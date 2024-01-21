@@ -16,9 +16,9 @@ namespace Academy_Homework.ViewModel
 
         private void OpenWarehousWindow(object parameter)
         {
-            var warehouseViewModel = new WarehouseViewModel();
-            WarehouseWindow warehouseWindow = new WarehouseWindow();
-            warehouseWindow.DataContext = warehouseViewModel;
+            var warehouseViewModel = new WarehouseViewModel(this);
+
+            WarehouseWindow warehouseWindow = new WarehouseWindow(warehouseViewModel);
 
             Application.Current.MainWindow.Close();
 
