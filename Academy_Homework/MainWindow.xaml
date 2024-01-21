@@ -25,6 +25,9 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
+    <!-- Green - Сделана полностью-->
+    <!-- Orange - Сделана на половину-->
+    <!-- Red - Не сделана-->
     <Grid Cursor="">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -39,11 +42,7 @@
                 <Button Content="Домашняя работа 1" FontSize="16" 
                     Command="{Binding WarehouseHmwOpenButton}" 
                     Style="{StaticResource HomeworkButtonStyle}" Background="Orange"/>
-                <Button 
-                Content="Домашняя работа 2" FontSize="16" 
-                Command="{Binding Homework2OpenCommand}" 
-                Style="{StaticResource HomeworkButtonStyle}" Background="Red"/>
-                
+
                 <!-- другие кнопки-->
             </StackPanel>
         </Grid>
