@@ -39,7 +39,7 @@
                     </StackPanel>
                     <Button Content="Обновить" Command="{Binding UpdateProductInformationCommand}" Width="150" Margin="10"/>
 
-                    <DataGrid x:Name="productsDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding ProductsDataView}">
+                    <DataGrid CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding ProductsDataView}">
                         
                         <DataGrid.Resources>
                             <DataTemplate x:Key="DeleteProductButtonTemplate">
@@ -76,7 +76,7 @@
                     </StackPanel>
                     <Button Content="Обновить" Command="{Binding UpdateProductTypesInformationCommand}" Width="150" Margin="10"/>
 
-                    <DataGrid x:Name="productsTypeDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding ProductsTypeDataView}">
+                    <DataGrid CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding ProductsTypeDataView}">
                         
                         <DataGrid.Resources>
                             <DataTemplate x:Key="DeleteTypeButtonTemplate">
@@ -109,7 +109,7 @@
                     </StackPanel>
                     <Button Content="Обновить" Command="{Binding UpdateSuppliersInformationCommand}" Width="150" Margin="10"/>
 
-                    <DataGrid x:Name="productsSuppliersDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding SuppliersDataView}">
+                    <DataGrid CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding SuppliersDataView}">
 
                         <DataGrid.Resources>
                             <DataTemplate x:Key="DeleteSupplierButtonTemplate">
