@@ -25,7 +25,7 @@ namespace Academy_Homework.ViewModel
         public ICommand AddSuppliersCommand { get; } // Добавление типа продукта
         public ICommand UpdateProductInformationCommand { get; } // Обновление списка продуктов из базы данных
         public ICommand UpdateProductTypesInformationCommand { get; } // Обновление списка типов из базы данных
-        public ICommand UpdateSuppliersInformationCommand { get; } // Обновление списка типов из базы данных
+        public ICommand UpdateSuppliersInformationCommand { get; } // Обновление списка поставщиков из базы данных
 
         public WarehouseViewModel(MainViewModel mainViewModel)
         {
