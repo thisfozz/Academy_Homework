@@ -40,13 +40,27 @@
                     <Button Content="Обновить" Command="{Binding UpdateProductInformationCommand}" Width="150" Margin="10"/>
 
                     <DataGrid x:Name="productsDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding ProductsDataView}">
+                        
+                        <DataGrid.Resources>
+                            <DataTemplate x:Key="DeleteProductButtonTemplate">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Удалить" 
+                                        Command="{Binding DataContext.DeleteProductCommand, 
+                                        RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" 
+                                        CommandParameter="{Binding}" Margin="10,5,10,5" Width="100"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGrid.Resources>
+                        
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="id" IsReadOnly="True" Width="30" Binding="{Binding id}"/>
                             <DataGridTextColumn Header="Наименование товара" IsReadOnly="True" Width="200" Binding="{Binding name}"/>
                             <DataGridTextColumn Header="Тип товара" IsReadOnly="True" Width="200" Binding="{Binding type_id}"/>
                             <DataGridTextColumn Header="Количество товара" IsReadOnly="True" Width="150" Binding="{Binding quantity}"/>
                             <DataGridTextColumn Header="Цена товара" IsReadOnly="True" Width="150" Binding="{Binding cost_price}"/>
+                            <DataGridTemplateColumn Header="Действия" Width="120" CellTemplate="{StaticResource DeleteProductButtonTemplate}"/>
                         </DataGrid.Columns>
+                        
                     </DataGrid>
 
                 </StackPanel>
@@ -63,9 +77,22 @@
                     <Button Content="Обновить" Command="{Binding UpdateProductTypesInformationCommand}" Width="150" Margin="10"/>
 
                     <DataGrid x:Name="productsTypeDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding ProductsTypeDataView}">
+                        
+                        <DataGrid.Resources>
+                            <DataTemplate x:Key="DeleteTypeButtonTemplate">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Удалить" 
+                                        Command="{Binding DataContext.DeleteProductTypeCommand, 
+                                        RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" 
+                                        CommandParameter="{Binding}" Margin="10,5,10,5" Width="100"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGrid.Resources>
+                        
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="id" IsReadOnly="True" Width="30" Binding="{Binding id}"/>
                             <DataGridTextColumn Header="Тип товара" IsReadOnly="True" Width="200" Binding="{Binding type_name}"/>
+                            <DataGridTemplateColumn Header="Действия" Width="120" CellTemplate="{StaticResource DeleteTypeButtonTemplate}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -83,9 +110,22 @@
                     <Button Content="Обновить" Command="{Binding UpdateSuppliersInformationCommand}" Width="150" Margin="10"/>
 
                     <DataGrid x:Name="productsSuppliersDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding SuppliersDataView}">
+
+                        <DataGrid.Resources>
+                            <DataTemplate x:Key="DeleteSupplierButtonTemplate">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Удалить" 
+                                        Command="{Binding DataContext.DeleteSupplierCommand, 
+                                        RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" 
+                                        CommandParameter="{Binding}" Margin="10,5,10,5" Width="100"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGrid.Resources>
+                        
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="id" IsReadOnly="True" Width="30" Binding="{Binding id}"/>
                             <DataGridTextColumn Header="Наименование поставщика" IsReadOnly="True" Width="200" Binding="{Binding supplier_name}"/>
+                            <DataGridTemplateColumn Header="Действия" Width="120" CellTemplate="{StaticResource DeleteSupplierButtonTemplate}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 

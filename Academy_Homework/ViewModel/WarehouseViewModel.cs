@@ -22,6 +22,9 @@ namespace Academy_Homework.ViewModel
         public ICommand UpdateProductInformationCommand { get; } // Обновление списка продуктов из базы данных
         public ICommand UpdateProductTypesInformationCommand { get; } // Обновление списка типов из базы данных
         public ICommand UpdateSuppliersInformationCommand { get; } // Обновление списка поставщиков из базы данных
+        public ICommand DeleteProductCommand { get; } // Удаление продукта из базы данных
+        public ICommand DeleteProductTypeCommand { get; } // Удаление продукта из базы данных
+        public ICommand DeleteSupplierCommand { get; } // Удаление продукта из базы данных
 
         public WarehouseViewModel(MainViewModel mainViewModel)
         {
@@ -36,6 +39,10 @@ namespace Academy_Homework.ViewModel
             UpdateProductInformationCommand = new DelegateCommand(UpdateProductInformation, (_) => true);
             UpdateProductTypesInformationCommand = new DelegateCommand(UpdateProductTypesInformation, (_) => true);
             UpdateSuppliersInformationCommand = new DelegateCommand(UpdateSuppliersInformation, (_) => true);
+
+            DeleteProductCommand = new DelegateCommand(DeleteProduct, (_) => true);
+            DeleteProductTypeCommand = new DelegateCommand(DeleteProductType, (_) => true);
+            DeleteSupplierCommand = new DelegateCommand(DeleteSupplier, (_) => true);
         }
 
 
@@ -240,7 +247,7 @@ namespace Academy_Homework.ViewModel
 
                     if (IsProductTypeValid(ProductTypeID))
                     {
-                        var commandText = "INSERT INTO Products VALUES(@id, @name, @type_id, @quantity, @cost_price)";
+                        var commandText = "INSERT INTO Products((name, type_id, quantity, cost_price) VALUES(@id, @name, @type_id, @quantity, @cost_price)";
 
                         using NpgsqlCommand command = new NpgsqlCommand(commandText, connection);
 
@@ -370,6 +377,22 @@ namespace Academy_Homework.ViewModel
             adapter.Fill(dataSet, tableName);
 
             SuppliersDataView = dataSet.Tables[tableName]?.DefaultView;
+        }
+
+        private void DeleteProduct(object obj)
+        {
+            //int id = obj.
+        }
+
+
+        private void DeleteProductType(object obj)
+        {
+            //
+        }
+
+        private void DeleteSupplier(object obj)
+        {
+            //
         }
 
 
