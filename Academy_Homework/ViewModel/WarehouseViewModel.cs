@@ -4,6 +4,7 @@ using Npgsql;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
 
@@ -20,7 +21,8 @@ namespace Academy_Homework.ViewModel
 
         public ICommand ConnectCommandButton { get; } // Подключение к базе данных
         public ICommand AddProductCommand { get; } // Добавление товара
-        public ICommand AddProductTypes { get; } // Добавление типа продукта
+        public ICommand AddProductTypesCommand { get; } // Добавление типа продукта
+        public ICommand AddSuppliersCommand { get; } // Добавление типа продукта
 
         public WarehouseViewModel()
         {
@@ -29,7 +31,8 @@ namespace Academy_Homework.ViewModel
 
             ConnectCommandButton = new DelegateCommand(ConnectToDatabase, (_) => true);
             AddProductCommand = new DelegateCommand(AddProduct, (_) => true);
-            AddProductTypes = new DelegateCommand(AddProductType, (_) => true);
+            AddProductTypesCommand = new DelegateCommand(AddProductType, (_) => true);
+            AddSuppliersCommand = new DelegateCommand(AddSuppliers, (_) => true);
         }
 
         // Временное решение с передачей ID. (может получать через SELECT id FROM Product ORDER BY id DESC LIMIT 1; +1 сделав поле readonly)
@@ -113,6 +116,20 @@ namespace Academy_Homework.ViewModel
                 {
                     _productType = value;
                     OnPropertyChanged(nameof(ProductType));
+                }
+            }
+        }
+
+        private string _suppliersName;
+        public string SuppliersName
+        {
+            get { return _suppliersName; }
+            set
+            {
+                if (_suppliersName != value)
+                {
+                    _suppliersName = value;
+                    OnPropertyChanged(nameof(SuppliersName));
                 }
             }
         }
@@ -238,6 +255,39 @@ namespace Academy_Homework.ViewModel
                     MessageBox.Show("Данные успешно добавлены");
                 } 
                 catch(Exception ex)
+                {
+                    transaction.Rollback();
+                    MessageBox.Show($"При добавлении данных возникла ошибка - {ex.Message}");
+                }
+                finally
+                {
+                    transaction.Dispose();
+                }
+            });
+        }
+
+
+        private void AddSuppliers(object obj)
+        {
+            ExecuteIfConnectionOpen(() =>
+            {
+                NpgsqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    var commandText = "INSERT INTO Suppliers VALUES(@id, @supplier_name)";
+                    int lastIndex = getLastIndex("SELECT id FROM Suppliers ORDER BY id DESC");
+
+                    using NpgsqlCommand command = new NpgsqlCommand(commandText, connection);
+
+                    command.Parameters.AddWithValue("@id", lastIndex);
+                    command.Parameters.AddWithValue("@supplier_name", SuppliersName);
+
+                    command.ExecuteNonQuery();
+                    transaction.Commit();
+
+                    MessageBox.Show("Данные успешно добавлены");
+                }
+                catch (Exception ex)
                 {
                     transaction.Rollback();
                     MessageBox.Show($"При добавлении данных возникла ошибка - {ex.Message}");

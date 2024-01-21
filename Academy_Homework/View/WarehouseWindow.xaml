@@ -55,7 +55,7 @@
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBlock Text="Наименование:" Margin="0,0,10,0" FontWeight="Bold"/>
                         <TextBox x:Name="productNameTypeTextBox" Width="150" Text="{Binding ProductType}"/>
-                        <Button Content="Добавить тип продукта" Command="{Binding AddProductTypes}" Margin="10,0,0,0" Width="150"/>
+                        <Button Content="Добавить тип продукта" Command="{Binding AddProductTypesCommand}" Margin="10,0,0,0" Width="150"/>
                     </StackPanel>
 
                     <DataGrid x:Name="productsTypeDataGrid" CanUserAddRows="False" AutoGenerateColumns="False">
@@ -70,8 +70,8 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBlock Text="Наименование:" Margin="0,0,10,0" FontWeight="Bold"/>
-                        <TextBox x:Name="SuppliersNameTextBox" Width="150"/>
-                        <Button Content="Добавить поставщика" Command="{Binding AddSuppliers}" Margin="10,0,0,0" Width="150"/>
+                        <TextBox x:Name="SuppliersNameTextBox" Width="150" Text="{Binding SuppliersName}"/>
+                        <Button Content="Добавить поставщика" Command="{Binding AddSuppliersCommand}" Margin="10,0,0,0" Width="150"/>
                     </StackPanel>
                     <DataGrid x:Name="productsSuppliersDataGrid" CanUserAddRows="False" AutoGenerateColumns="False">
                         <DataGrid.Columns>
