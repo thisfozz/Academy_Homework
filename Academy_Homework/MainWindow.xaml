@@ -41,7 +41,7 @@
             <StackPanel Grid.Column="0" Orientation="Vertical" Margin="10">
                 <Button Content="Домашняя работа 1" FontSize="16" 
                     Command="{Binding WarehouseHmwOpenButton}" 
-                    Style="{StaticResource HomeworkButtonStyle}" Background="Orange"/>
+                    Style="{StaticResource HomeworkButtonStyle}" Background="Green"/>
 
                 <!-- другие кнопки-->
             </StackPanel>
