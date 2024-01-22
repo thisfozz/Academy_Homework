@@ -411,7 +411,7 @@ namespace Academy_Homework.ViewModel
             var rowID = dataRow.Row[0];
 
             string tableName = "ProductTypes";
-            string query = $"DELETE CASCADE FROM {tableName} WHERE id = {rowID}";
+            string query = $"DELETE FROM {tableName} WHERE id = {rowID}";
 
             NpgsqlCommand command = new NpgsqlCommand(query, connection);
 
