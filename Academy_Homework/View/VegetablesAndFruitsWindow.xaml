@@ -62,16 +62,16 @@
 
                     <StackPanel Grid.Column="0">
                         <Button Content="Все данные" Command="{Binding ShowAllDataCommand }"/>
-                        <Button Content="Все названия"/>
-                        <Button Content="Все цвета"/>
+                        <Button Content="Все названия" Command="{Binding ShowAllNamesCommand }"/>
+                        <Button Content="Все цвета" Command="{Binding ShowAllColorsCommand}"/>
 
-                        <Button Content="Максимальная калорийность"/>
-                        <Button Content="Минимальная калорийность"/>
-                        <Button Content="Средняя калорийность"/>
+                        <Button Content="Максимальная калорийность" Command="{Binding ShowMaxCaloriesCommand}"/>
+                        <Button Content="Минимальная калорийность" Command="{Binding ShowMinCaloriesCommand}"/>
+                        <Button Content="Средняя калорийность" Command="{Binding ShowAvgCaloriesCommand}"/>
 
-                        <Button Content="Количество овощей"/>
-                        <Button Content="Количество фруктов"/>
-                        <Button Content="Количество овощей и фруктов заданного цвета"/>
+                        <Button Content="Количество овощей" Command="{Binding ShowAllVegetablesCountCommand}"/>
+                        <Button Content="Количество фруктов" Command="{Binding ShowAllFruitsCountCommand}"/>
+                        <Button Content="Количество овощей и фруктов заданного цвета" Command="{Binding ShowItemsByColorCommand}"/>
                         <Button Content="Количество овощей и фруктов каждого цвета"/>
 
                         <Button Content="Овощи и фрукты с калорийностью ниже указанной"/>
@@ -82,7 +82,7 @@
                     </StackPanel>
 
                     <!-- Будет доделоано в следующем pull request-->
-                    <DataGrid x:Name="yourDataGrid" Grid.Column="1" Width="Auto"/>
+                    <DataGrid x:Name="DataGrid" Grid.Column="1" Width="Auto" ItemsSource="{Binding ProduceDataTable}" />
                 </Grid>
             </TabItem>
         </TabControl>
