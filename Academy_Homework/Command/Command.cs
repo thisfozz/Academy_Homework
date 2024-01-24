@@ -1,30 +1,27 @@
 ﻿using System.Windows.Input;
 
-namespace Command_
+public abstract class CommandBase : ICommand
 {
-    public abstract class Command : ICommand
+    public event EventHandler CanExecuteChanged
     {
-        bool ICommand.CanExecute(object parameter) => CanExecute(parameter);
-
-        void ICommand.Execute(object parameter) => Execute(parameter);
-
-        protected virtual bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        protected abstract void Execute(object? parameter = null);
-
-        protected virtual void OnCanExecuteChanged(EventArgs e)
-        {
-            CanExecuteChanged?.Invoke(this, e);
-        }
-
-        public void RaiseCanExecuteChanged()
-        {
-            OnCanExecuteChanged(EventArgs.Empty);
-        }
-
-        public event EventHandler? CanExecuteChanged;
+        add => CommandManager.RequerySuggested += value;
+        remove => CommandManager.RequerySuggested -= value;
     }
+
+    public bool CanExecute(object parameter)
+    {
+        return CanExecuteCmd(parameter);
+    }
+
+    public void Execute(object parameter)
+    {
+        ExecuteCmd(parameter);
+    }
+
+    protected virtual bool CanExecuteCmd(object parameter)
+    {
+        return true;
+    }
+
+    protected abstract void ExecuteCmd(object parameter);
 }

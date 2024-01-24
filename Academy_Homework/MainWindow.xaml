@@ -39,9 +39,13 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" Orientation="Vertical" Margin="10">
-                <Button Content="Домашняя работа 1" FontSize="16" 
-                    Command="{Binding WarehouseHmwOpenButton}" 
+                <Button Content="Склад" FontSize="16" 
+                    Command="{Binding WarehouseHmwOpenCommand}" 
                     Style="{StaticResource HomeworkButtonStyle}" Background="Green"/>
+
+                <Button Content="Овощи и фрукты" FontSize="16" 
+                    Command="{Binding VegetablesAndFruitsCommand}" 
+                    Style="{StaticResource HomeworkButtonStyle}" Background="Red"/>
 
                 <!-- другие кнопки-->
             </StackPanel>

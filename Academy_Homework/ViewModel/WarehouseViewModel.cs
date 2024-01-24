@@ -4,6 +4,7 @@ using Npgsql;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Data;
@@ -66,7 +67,7 @@ namespace Academy_Homework.ViewModel
         private int _productID;
         public int ProductID
         {
-            get { return _productID; }
+            get => _productID;
             set
             {
                 if (_productID != value)
@@ -80,7 +81,7 @@ namespace Academy_Homework.ViewModel
         private string _productName;
         public string ProductName
         {
-            get { return _productName; }
+            get => _productName;
             set
             {
                 if (_productName != value)
@@ -94,7 +95,7 @@ namespace Academy_Homework.ViewModel
         private int _productTypeID;
         public int ProductTypeID
         {
-            get { return _productTypeID; }
+            get => _productTypeID;
             set
             {
                 if (_productTypeID != value)
@@ -108,7 +109,7 @@ namespace Academy_Homework.ViewModel
         private int _productQuantity;
         public int ProductQuantity
         {
-            get { return _productQuantity; }
+            get => _productQuantity;
             set
             {
                 if (_productQuantity != value)
@@ -122,7 +123,7 @@ namespace Academy_Homework.ViewModel
         private decimal _productCostPrice;
         public decimal ProductCostPrice
         {
-            get { return _productCostPrice; }
+            get => _productCostPrice;
             set
             {
                 if (_productCostPrice != value)
@@ -136,7 +137,7 @@ namespace Academy_Homework.ViewModel
         private string _productType;
         public string ProductType
         {
-            get { return _productType; }
+            get => _productType;
             set
             {
                 if (_productType != value)
@@ -150,7 +151,7 @@ namespace Academy_Homework.ViewModel
         private string _suppliersName;
         public string SuppliersName
         {
-            get { return _suppliersName; }
+            get => _suppliersName;
             set
             {
                 if (_suppliersName != value)
@@ -164,7 +165,7 @@ namespace Academy_Homework.ViewModel
         private DataView _productsDataView;
         public DataView ProductsDataView
         {
-            get { return _productsDataView; }
+            get => _productsDataView;
             set
             {
                 _productsDataView = value;
@@ -175,7 +176,7 @@ namespace Academy_Homework.ViewModel
         private DataView _productsTypeDataView;
         public DataView ProductsTypeDataView
         {
-            get { return _productsTypeDataView; }
+            get => _productsTypeDataView;
             set
             {
                 _productsTypeDataView = value;
@@ -186,7 +187,7 @@ namespace Academy_Homework.ViewModel
         private DataView _suppliersDataView;
         public DataView SuppliersDataView
         {
-            get { return _suppliersDataView; }
+            get => _suppliersDataView;
             set
             {
                 _suppliersDataView = value;
@@ -259,14 +260,14 @@ namespace Academy_Homework.ViewModel
         {
             ExecuteIfConnectionOpen(() =>
             {
-                NpgsqlTransaction transaction = connection.BeginTransaction();
+                var transaction = connection.BeginTransaction();
                 try
                 {
                     if (IsProductTypeValid(ProductTypeID, "SELECT id FROM ProductTypes ORDER BY id DESC"))
                     {
                         var commandText = "INSERT INTO Products(name, type_id, quantity, cost_price) VALUES(@name, @type_id, @quantity, @cost_price)";
 
-                        using NpgsqlCommand command = new NpgsqlCommand(commandText, connection);
+                        using var command = new NpgsqlCommand(commandText, connection);
 
                         command.Parameters.AddWithValue("@name", ProductName);
                         command.Parameters.AddWithValue("@type_id", ProductTypeID);
@@ -298,12 +299,12 @@ namespace Academy_Homework.ViewModel
         {
             ExecuteIfConnectionOpen(() =>
             {
-                NpgsqlTransaction transaction = connection.BeginTransaction();
+                var transaction = connection.BeginTransaction();
                 try
                 {
                     var commandText = "INSERT INTO ProductTypes(type_name) VALUES(@type_name)";
 
-                    using NpgsqlCommand command = new NpgsqlCommand(commandText, connection);
+                    using var command = new NpgsqlCommand(commandText, connection);
 
                     command.Parameters.AddWithValue("@type_name", ProductType);
 
@@ -327,12 +328,12 @@ namespace Academy_Homework.ViewModel
         {
             ExecuteIfConnectionOpen(() =>
             {
-                NpgsqlTransaction transaction = connection.BeginTransaction();
+                var transaction = connection.BeginTransaction();
                 try
                 {
                     var commandText = "INSERT INTO Suppliers(supplier_name) VALUES(@supplier_name)";
 
-                    using NpgsqlCommand command = new NpgsqlCommand(commandText, connection);
+                    using var command = new NpgsqlCommand(commandText, connection);
 
                     command.Parameters.AddWithValue("@supplier_name", SuppliersName);
 
@@ -357,8 +358,8 @@ namespace Academy_Homework.ViewModel
         // Обновление информации о товарах/типов товаров/поставщиках
         private void UpdateProductInformation(object obj)
         {
-            string tableName = "Products";
-            string query = "SELECT * FROM Products";
+            var tableName = "Products";
+            var query = "SELECT * FROM Products";
             var adapter = new NpgsqlDataAdapter(query, connection);
             var dataSet = new DataSet();
             adapter.Fill(dataSet, tableName);
@@ -456,11 +457,10 @@ namespace Academy_Homework.ViewModel
                            "ORDER BY total_quantity DESC " +
                            "LIMIT 1;";
 
-            using NpgsqlCommand command = new NpgsqlCommand(query, connection);
-
             ExecuteIfConnectionOpen(() =>
             {
-                using NpgsqlDataReader reader = command.ExecuteReader();
+                using var command = new NpgsqlCommand(query, connection);
+                using var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
@@ -485,11 +485,10 @@ namespace Academy_Homework.ViewModel
                            "ORDER BY total_quantity ASC " +
                            "LIMIT 1;";
 
-            using NpgsqlCommand command = new NpgsqlCommand(query, connection);
-
             ExecuteIfConnectionOpen(() =>
             {
-                using NpgsqlDataReader reader = command.ExecuteReader();
+                using var command = new NpgsqlCommand(query, connection);
+                using var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
@@ -513,11 +512,10 @@ namespace Academy_Homework.ViewModel
                             "ORDER BY total_quantity DESC " +
                             "LIMIT 1;";
 
-            using NpgsqlCommand command = new NpgsqlCommand(query, connection);
-
             ExecuteIfConnectionOpen(() =>
             {
-                using NpgsqlDataReader reader = command.ExecuteReader();
+                using var command = new NpgsqlCommand(query, connection);
+                using var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
@@ -541,12 +539,10 @@ namespace Academy_Homework.ViewModel
                            "ORDER BY total_quantity ASC " +
                            "LIMIT 1;";
 
-            using NpgsqlCommand command = new NpgsqlCommand(query, connection);
-
             ExecuteIfConnectionOpen(() =>
             {
-                using NpgsqlDataReader reader = command.ExecuteReader();
-
+                using var command = new NpgsqlCommand(query, connection);
+                using var reader = command.ExecuteReader();
 
                 if (reader.Read())
                 {
