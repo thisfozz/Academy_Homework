@@ -5,8 +5,81 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Academy_Homework.View"
         mc:Ignorable="d"
-        Title="VegetablesAndFruitsWindow" Height="450" Width="800">
+        Title="VegetablesAndFruitsWindow" Height="700" Width="900">
     <Grid>
-        <TextBlock Text="fruits"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Margin="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition Width="300"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" 
+                       Text="Овощи и Фрукты" 
+                       FontSize="20" 
+                       HorizontalAlignment="Left"
+                       Margin="10,10,0,10"/>
+
+                <Grid Grid.Column="1" Margin="80,10,-60,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <ComboBox Height="40" Name="databaseComboBox"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1">
+                        <Button Height="40" Content="Подключиться к базе данных"/>
+                    </StackPanel>
+                </Grid>
+
+            </Grid>
+        </Border>
+
+        <TabControl Grid.Row="1" Margin="10">
+            <TabItem Header="Выборка данных">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Height" Value="30"/>
+                            <Setter Property="Margin" Value="0,0,0,5"/>
+                        </Style>
+                    </Grid.Resources>
+
+                    <StackPanel Grid.Column="0">
+                        <Button Content="Все данные"/>
+                        <Button Content="Все названия"/>
+                        <Button Content="Все цвета"/>
+
+                        <Button Content="Максимальная калорийность"/>
+                        <Button Content="Минимальная калорийность"/>
+                        <Button Content="Средняя калорийность"/>
+
+                        <Button Content="Количество овощей"/>
+                        <Button Content="Количество фруктов"/>
+                        <Button Content="Количество овощей и фруктов заданного цвета"/>
+                        <Button Content="Количество овощей и фруктов каждого цвета"/>
+
+                        <Button Content="Овощи и фрукты с калорийностью ниже указанной"/>
+                        <Button Content="Овощи и фрукты с калорийностью выше указанной"/>
+                        <Button Content="Овощи и фрукты с калорийностью в указанном диапазоне"/>
+
+                        <Button Content="Все овощи и фрукты, у которых цвет желтый или красный"/>
+                    </StackPanel>
+
+                    <DataGrid x:Name="yourDataGrid" Grid.Column="1" Width="Auto"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
