@@ -31,10 +31,14 @@
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0">
-                        <ComboBox Height="40" Name="databaseComboBox"/>
+                        <ComboBox Height="40" Name="databaseComboBox" 
+                                  SelectedItem="{Binding SelectedDatabase}" 
+                                  ItemsSource="{Binding DatabaseList}"/>
                     </StackPanel>
                     <StackPanel Grid.Row="1">
-                        <Button Height="40" Content="Подключиться к базе данных"/>
+                        <Button Height="40" 
+                                Content="Подключиться к базе данных"
+                                Command="{Binding ConnectCommandButton}"/>
                     </StackPanel>
                 </Grid>
 
@@ -77,6 +81,7 @@
                         <Button Content="Все овощи и фрукты, у которых цвет желтый или красный"/>
                     </StackPanel>
 
+                    <!-- Будет доделоано в следующем pull request-->
                     <DataGrid x:Name="yourDataGrid" Grid.Column="1" Width="Auto"/>
                 </Grid>
             </TabItem>

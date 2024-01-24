@@ -32,7 +32,7 @@ namespace Academy_Homework.ViewModel
         {
             var vegetablesAndFruitsViewModel = new VegetablesAndFruitsViewModel(this);
 
-            var vegetablesAndFruitsWindow = new VegetablesAndFruitsWindow();
+            var vegetablesAndFruitsWindow = new VegetablesAndFruitsWindow(vegetablesAndFruitsViewModel);
 
             Application.Current.MainWindow.Close();
 
