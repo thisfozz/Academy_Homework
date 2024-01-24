@@ -59,7 +59,6 @@ namespace Academy_Homework.ViewModel
             ConnectCommandButton = new DelegateCommand(ConnectToDatabase, (_) => true);
         }
 
-
         private void ConnectToDatabase(object obj)
         {
             if (string.IsNullOrEmpty(selectedDatabase))
@@ -90,7 +89,6 @@ namespace Academy_Homework.ViewModel
                 MessageBox.Show($"Ошибка подключения к базе данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

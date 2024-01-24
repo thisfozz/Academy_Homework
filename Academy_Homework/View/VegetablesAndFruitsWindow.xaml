@@ -61,7 +61,7 @@
                     </Grid.Resources>
 
                     <StackPanel Grid.Column="0">
-                        <Button Content="Все данные"/>
+                        <Button Content="Все данные" Command="{Binding ShowAllDataCommand }"/>
                         <Button Content="Все названия"/>
                         <Button Content="Все цвета"/>
 
