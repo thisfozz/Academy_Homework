@@ -29,7 +29,7 @@ public class VegetablesAndFruitsViewModel : INotifyPropertyChanged
     public ICommand ShowItemsAboveCaloriesCommand { get; } //  Показать овощи и фрукты с калорийностью выше указанной
     public ICommand ShowItemsInCaloriesRangeCommand { get; } // Показать овощи и фрукты с калорийностью в указанном диапазоне
     public ICommand ShowItemsByColorYellowRedCommand { get; } // Показать все овощи и фрукты, у которых цвет желтый или красный
-    public ICommand DeleteProductCommand { get; } // Показать все овощи и фрукты, у которых цвет желтый или красный
+    public ICommand DeleteProductCommand { get; } // Удаление продукта
 
     private DbConnection connection;
     private DbProviderFactory factory;
@@ -96,6 +96,7 @@ public class VegetablesAndFruitsViewModel : INotifyPropertyChanged
         ShowItemsAboveCaloriesCommand = new DelegateCommand(ShowItemsAboveCalories, (_) => true);
         ShowItemsInCaloriesRangeCommand = new DelegateCommand(ShowItemsInCaloriesRange, (_) => true);
         ShowItemsByColorYellowRedCommand = new DelegateCommand(ShowItemsByColorYellowRed, (_) => true);
+
         DeleteProductCommand = new DelegateCommand(DeleteProduct, (_) => true);
     }
 

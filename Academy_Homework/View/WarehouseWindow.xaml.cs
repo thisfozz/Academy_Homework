@@ -9,8 +9,5 @@ public partial class WarehouseWindow : Window
     {
         InitializeComponent();
         DataContext = warehouseViewModel;
-
-        Height = 900;
-        Width = 900;
     }
 }
