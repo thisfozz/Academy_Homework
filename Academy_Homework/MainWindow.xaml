@@ -45,7 +45,7 @@
 
                 <Button Content="Овощи и фрукты" FontSize="16" 
                     Command="{Binding VegetablesAndFruitsCommand}" 
-                    Style="{StaticResource HomeworkButtonStyle}" Background="Red"/>
+                    Style="{StaticResource HomeworkButtonStyle}" Background="Green"/>
 
                 <!-- другие кнопки-->
             </StackPanel>
