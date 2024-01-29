@@ -47,7 +47,9 @@
                     Command="{Binding VegetablesAndFruitsCommand}" 
                     Style="{StaticResource HomeworkButtonStyle}" Background="Green"/>
 
-                <!-- другие кнопки-->
+                <Button Content="Страны" FontSize="16" 
+                    Command="{Binding OpenCountriesCommand}" 
+                    Style="{StaticResource HomeworkButtonStyle}" Background="Red"/>
             </StackPanel>
         </Grid>
     </Grid>

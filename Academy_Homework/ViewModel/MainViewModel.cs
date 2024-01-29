@@ -9,11 +9,13 @@ public class MainViewModel
 {
     public ICommand WarehouseHmwOpenCommand { get; }
     public ICommand VegetablesAndFruitsCommand { get; }
+    public ICommand OpenCountriesCommand { get; }
 
     public MainViewModel()
     {
         WarehouseHmwOpenCommand = new DelegateCommand(OpenWarehousWindow, (_) => true);
         VegetablesAndFruitsCommand = new DelegateCommand(OpenVegetablesAndFruitsWindow, (_) => true);
+        OpenCountriesCommand = new DelegateCommand(OpenOpenCountrieWindow, (_) => true);
     }
 
     private void OpenWarehousWindow(object parameter)
@@ -37,6 +39,17 @@ public class MainViewModel
         Application.Current.MainWindow.Close();
 
         Application.Current.MainWindow = vegetablesAndFruitsWindow;
+        Application.Current.MainWindow.Show();
+    }
+
+    private void OpenOpenCountrieWindow(object obj)
+    {
+        var countriesViewModel = new CountriesViewModel();
+
+        var countriesWindow = new CountriesWindow(countriesViewModel);
+
+        Application.Current.MainWindow.Close();
+        Application.Current.MainWindow = countriesWindow;
         Application.Current.MainWindow.Show();
     }
 }

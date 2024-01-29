@@ -6,7 +6,6 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Input;
 
@@ -104,11 +103,11 @@ public class VegetablesAndFruitsViewModel : INotifyPropertyChanged
     {
         ObservableCollection<string> databaseNames = new ObservableCollection<string>();
 
-        ConnectionStringSettingsCollection connectionStrings = ConfigurationManager.ConnectionStrings;
+        var connectionStrings = ConfigurationManager.ConnectionStrings;
 
         foreach (ConnectionStringSettings connectionString in connectionStrings)
         {
-            if (!String.IsNullOrEmpty(connectionString.Name) && connectionString.Name != "WarehouseConnectionString")
+            if (!String.IsNullOrEmpty(connectionString.Name) && connectionString.Name != "WarehouseConnectionString" && connectionString.Name != "Countries")
             {
                 databaseNames.Add(connectionString.Name);
             }
