@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Academy_Homework.View"
+        xmlns:resource="clr-namespace:Academy_Homework.Properties"
         mc:Ignorable="d"
         Title="VegetablesAndFruitsWindow" Height="700" Width="900">
     <Grid>
@@ -20,7 +20,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" 
-                       Text="Овощи и Фрукты" 
+                       Text="{x:Static resource:Resources.VegetableAndFruitsResource}"
                        FontSize="20" 
                        HorizontalAlignment="Left"
                        Margin="10,10,0,10"/>
@@ -37,8 +37,8 @@
                     </StackPanel>
                     <StackPanel Grid.Row="1">
                         <Button Height="40" 
-                                Content="Подключиться к базе данных"
-                                Command="{Binding ConnectCommandButton}"/>
+                                Content="{x:Static resource:Resources.ConnectToDatabaseResource}"
+                                Command="{Binding ConnectCommand}"/>
                     </StackPanel>
                 </Grid>
 
@@ -46,7 +46,7 @@
         </Border>
 
         <TabControl Grid.Row="1" Margin="10">
-            <TabItem Header="Выборка данных">
+            <TabItem Header="{x:Static resource:Resources.DataSamplingResource}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="350"/>
@@ -61,28 +61,42 @@
                     </Grid.Resources>
 
                     <StackPanel Grid.Column="0">
-                        <Button Content="Все данные"/>
-                        <Button Content="Все названия"/>
-                        <Button Content="Все цвета"/>
+                        <Button Content="{x:Static resource:Resources.ShowAllDataResource}" Command="{Binding ShowAllDataCommand }"/>
+                        <Button Content="{x:Static resource:Resources.ShowAllNamesResource}" Command="{Binding ShowAllNamesCommand }"/>
+                        <Button Content="{x:Static resource:Resources.ShowAllColorsResource}" Command="{Binding ShowAllColorsCommand}"/>
 
-                        <Button Content="Максимальная калорийность"/>
-                        <Button Content="Минимальная калорийность"/>
-                        <Button Content="Средняя калорийность"/>
+                        <Button Content="{x:Static resource:Resources.MaximumCalorieResource}" Command="{Binding ShowMaxCaloriesCommand}"/>
+                        <Button Content="{x:Static resource:Resources.MinimumCalorieResource}" Command="{Binding ShowMinCaloriesCommand}"/>
+                        <Button Content="{x:Static resource:Resources.AverageCalorieResource}" Command="{Binding ShowAvgCaloriesCommand}"/>
 
-                        <Button Content="Количество овощей"/>
-                        <Button Content="Количество фруктов"/>
-                        <Button Content="Количество овощей и фруктов заданного цвета"/>
-                        <Button Content="Количество овощей и фруктов каждого цвета"/>
+                        <Button Content="{x:Static resource:Resources.CountVegetableResource}" Command="{Binding ShowAllVegetablesCountCommand}"/>
+                        <Button Content="{x:Static resource:Resources.CountFruitsResource}" Command="{Binding ShowAllFruitsCountCommand}"/>
+                        <Button Content="{x:Static resource:Resources.CountVegetableAndFruitByColorResource}" Command="{Binding ShowItemsByColorCommand}"/>
+                        <Button Content="{x:Static resource:Resources.CountVegetableAndFruitByEachColorResource}" Command="{Binding ShowItemCountByColorCommand}"/>
 
-                        <Button Content="Овощи и фрукты с калорийностью ниже указанной"/>
-                        <Button Content="Овощи и фрукты с калорийностью выше указанной"/>
-                        <Button Content="Овощи и фрукты с калорийностью в указанном диапазоне"/>
+                        <Button Content="{x:Static resource:Resources.VegetableAndFruitBelowCaloriesResource}" Command="{Binding ShowItemsBelowCaloriesCommand}"/>
+                        <Button Content="{x:Static resource:Resources.VegetableAndFruitAboveCaloriesResource}" Command="{Binding ShowItemsAboveCaloriesCommand}"/>
+                        <Button Content="{x:Static resource:Resources.VegetableAndFruitInRangeCaloriesResource}" Command="{Binding ShowItemsInCaloriesRangeCommand}"/>
 
-                        <Button Content="Все овощи и фрукты, у которых цвет желтый или красный"/>
+                        <Button Content="{x:Static resource:Resources.YellowOrRedVegetableAndFruitResource}" Command="{Binding ShowItemsByColorYellowRedCommand}"/>
                     </StackPanel>
 
-                    <!-- Будет доделоано в следующем pull request-->
-                    <DataGrid x:Name="yourDataGrid" Grid.Column="1" Width="Auto"/>
+                    <DataGrid CanUserAddRows="False" Grid.Column="1" Width="Auto" ItemsSource="{Binding ProduceDataTable}" >
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="{x:Static resource:Resources.ActionResource}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="{x:Static resource:Resources.DeleteResource}" 
+                                                Command="{Binding DataContext.DeleteProductCommand, 
+                                                                  RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" 
+                                                CommandParameter="{Binding}" 
+                                                Margin="10,5,10,5" 
+                                                Width="100"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
         </TabControl>
